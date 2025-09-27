@@ -6,19 +6,19 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_cohere import ChatCohere
 from langchain_core.messages import HumanMessage, AIMessage
 
-# Cargar variables de entorno
+# Load environment variables
 load_dotenv()
 
 # Set Tavily API key
 os.environ["TAVILY_API_KEY"] = os.getenv("TAVILY_API_KEY")
 
-# Inicializar el modelo
+# Initialize the model
 llm = ChatCohere(model="command-r-plus")
 
-# Inicializar herramientas
+# Initialize tools
 tools = [TavilySearchResults(max_results=2)]
 
-# Crear el prompt
+# Create the prompt
 # Note: The prompt template now includes a placeholder for agent_scratchpad
 prompt = ChatPromptTemplate.from_messages(
     [
@@ -29,10 +29,10 @@ prompt = ChatPromptTemplate.from_messages(
 )
 
 
-# Crear el agente
+# Create the agent
 agent = create_react_agent(llm, tools, prompt)
 
-# Crear el ejecutor del agente
+# Create the agent executor
 agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
 def get_response(query):
